@@ -81,7 +81,6 @@ namespace ModSync
                         client.Progress += new EventHandler<SvnProgressEventArgs>(cl_Progress);
                         SvnUpdateArgs sua = new SvnUpdateArgs();
                         sua.AllowObstructions = true;
-                        //sua.Depth = SvnDepth.Infinity;
                         SvnUpdateResult result;
                         client.Update(target_repo, sua, out result);
                     }
@@ -100,7 +99,8 @@ namespace ModSync
                     }
                     SvnRevertArgs sra = new SvnRevertArgs();
                     sra.Depth = SvnDepth.Infinity;
-                    client.Revert(target_repo, sra);
+                    // Erstmal auskommentiert lassen da es anscheinend ein Update verhindert
+                    //client.Revert(target_repo, sra);
                 }
                 this.RequestStop();
             }
@@ -121,7 +121,6 @@ namespace ModSync
                         client.Progress += new EventHandler<SvnProgressEventArgs>(cl_Progress);
                         //client.Notify += new EventHandler<SvnNotifyEventArgs>(notifyme);
                         SvnCheckOutArgs sco = new SvnCheckOutArgs();
-                        //sco.Depth = SvnDepth.Infinity;
                         sco.AllowObstructions = false;
                         client.CheckOut(from, to, out result);
                     }
