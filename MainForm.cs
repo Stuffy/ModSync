@@ -138,6 +138,8 @@ namespace ModSync
             if (aborted == false)
             {
                 la_desc_dl1.Text = "Herrunterladen war erfolgreich!";
+                updateresult = 0;
+                setUpdateLabel(null);
             }
             else
             {
