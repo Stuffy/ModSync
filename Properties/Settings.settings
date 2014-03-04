@@ -36,7 +36,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User">
-      <Value Profile="(Default)">0.1.4</Value>
+      <Value Profile="(Default)">0.1.5</Value>
     </Setting>
   </Settings>
 </SettingsFile>

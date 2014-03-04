@@ -113,7 +113,7 @@ namespace ModSync
             // la_byte
             // 
             this.la_byte.AutoSize = true;
-            this.la_byte.Location = new System.Drawing.Point(646, 413);
+            this.la_byte.Location = new System.Drawing.Point(187, 413);
             this.la_byte.Name = "la_byte";
             this.la_byte.Size = new System.Drawing.Size(42, 13);
             this.la_byte.TabIndex = 11;

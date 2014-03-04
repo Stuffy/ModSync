@@ -78,6 +78,10 @@ namespace ModSync
                 {
                     try
                     {
+                        SvnRevertArgs sra = new SvnRevertArgs();
+                        sra.Depth = SvnDepth.Infinity;
+                        // Vor dem Update reverten um vor dem Update vorhandene Dateien zu überschreiben?
+                        client.Revert(target_repo, sra);
                         client.Progress += new EventHandler<SvnProgressEventArgs>(cl_Progress);
                         SvnUpdateArgs sua = new SvnUpdateArgs();
                         sua.AllowObstructions = true;
@@ -97,10 +101,6 @@ namespace ModSync
                             MessageBox.Show("Ein Fehler ist aufgetreten:" + se.Message);
                         }
                     }
-                    SvnRevertArgs sra = new SvnRevertArgs();
-                    sra.Depth = SvnDepth.Infinity;
-                    // Erstmal auskommentiert lassen da es anscheinend ein Update verhindert
-                    //client.Revert(target_repo, sra);
                 }
                 this.RequestStop();
             }
