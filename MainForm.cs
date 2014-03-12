@@ -139,7 +139,7 @@ namespace ModSync
             {
                 la_desc_dl1.Text = "Herrunterladen war erfolgreich!";
                 updateresult = 0;
-                setUpdateLabel(null);
+                setUpdateLabel(null, la_isuptodate);
             }
             else
             {
@@ -153,9 +153,9 @@ namespace ModSync
             chb_autojoin.Checked = Properties.Settings.Default.autojoin;
         }
 
-        int checkforUpdate(out SvnInfoEventArgs[] repos) 
+        int checkforUpdate(out SvnInfoEventArgs[] repos, string repo_to_check) 
         {
-            repos = svnM.svnGetDiff(Properties.Settings.Default.arma3path, Properties.Settings.Default.svnserver);
+            repos = svnM.svnGetDiff(Properties.Settings.Default.arma3path, repo_to_check);
 
             Collection<SvnLogEventArgs> logs = null;
 
@@ -235,8 +235,8 @@ namespace ModSync
             if (Properties.Settings.Default.checkforupdates == true)
             {
                 SvnInfoEventArgs[] repos;
-                updateresult = checkforUpdate(out repos);
-                setUpdateLabel(repos);
+                updateresult = checkforUpdate(out repos, Properties.Settings.Default.svnserver);
+                setUpdateLabel(repos, la_isuptodate);
                 if (updateresult == 1)
                 {
                     MessageBox.Show("Ein Update ist verfügbar! Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString());
@@ -244,30 +244,30 @@ namespace ModSync
             }
         }
 
-        private void setUpdateLabel(SvnInfoEventArgs[] repos)
+        private void setUpdateLabel(SvnInfoEventArgs[] repos, Label label_to_set)
         {
             if (updateresult == 1)
             {
-                la_isuptodate.Text = "Nicht aktuell";
-                la_isuptodate.BackColor = Color.Red;
+                label_to_set.Text = "Nicht aktuell";
+                label_to_set.BackColor = Color.Red;
             }
             else if (updateresult == 0)
             {
-                la_isuptodate.Text = "Aktuell";
-                la_isuptodate.BackColor = Color.Green;
+                label_to_set.Text = "Aktuell";
+                label_to_set.BackColor = Color.Green;
             }
             else if (updateresult == 4)
             {
-                la_isuptodate.Text = "Nicht installiert";
-                la_isuptodate.BackColor = Color.Yellow;
+                label_to_set.Text = "Nicht installiert";
+                label_to_set.BackColor = Color.Yellow;
             }
         }
 
         private void bt_checkforupdates_Click(object sender, EventArgs e)
         {
             SvnInfoEventArgs[] repos;
-            updateresult = checkforUpdate(out repos);
-            setUpdateLabel(repos);
+            updateresult = checkforUpdate(out repos, Properties.Settings.Default.svnserver);
+            setUpdateLabel(repos, la_isuptodate);
             if (updateresult == 1)
             {
                 MessageBox.Show("Ein Update ist verfügbar! Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString(), "Neue Updates gefunden");
@@ -375,5 +375,49 @@ namespace ModSync
             Properties.Settings.Default.autojoin = chb_autojoin.Checked;
             Properties.Settings.Default.Save();
         }
+		
+		void Bt_updatempClick(object sender, EventArgs e)
+		{
+			bool upt = true;
+            if (checkforexe() == false)
+            {
+                if (MessageBox.Show("Die arma3.exe wurde im ausgewählten Update-Verzeichniss nicht gefunden. Sicher, das das Update durchgeführt werden soll?", "Arma3.exe nicht gefunden!", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    upt = true;
+                }
+                else
+                {
+                    upt = false;
+                }
+            }
+            if (upt)
+            if (svnM._IsReachable)
+            {
+                if (bt_checkout.Text != "Abbrechen")
+                {
+                    svnM.startUpdate(new Uri(Properties.Settings.Default.svnserver), Properties.Settings.Default.arma3path);
+                    bt_checkout.Text = "Abbrechen";
+                    la_desc_dl1.Text = "Inhalte werden herruntergeladen...";
+                    la_byte.Visible = true;
+                    la_desc_dl1.Visible = true;
+                    prgupdate = new Thread(new ThreadStart(() => updateProgress()));
+                    prgupdate.Start();
+                    while (!prgupdate.IsAlive) ;
+                }
+                else
+                {
+                    if (prgupdate.IsAlive)
+                    {
+                        svnM.endThread();
+                        prgupdate.Abort();
+                        ThreadDone(true);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Der Server '" + Properties.Settings.Default.svnserver + "' konnte nicht erreicht werden.");
+            }
+		}
 	}
 }

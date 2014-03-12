@@ -40,6 +40,7 @@ namespace ModSync
             tb_otherstartup.Text = Properties.Settings.Default.otherstartup;
 
             tb_svnserver.Text = Properties.Settings.Default.svnserver;
+            tb_mp_svnserver.Text = Properties.Settings.Default.mp_svnserver;
             chb_checkforupdates.Checked = Properties.Settings.Default.checkforupdates;
         }
 
@@ -55,6 +56,7 @@ namespace ModSync
             Properties.Settings.Default.autojoinserver = tb_autojoinserver.Text;
             Properties.Settings.Default.password = tb_password.Text;
             Properties.Settings.Default.otherstartup = tb_otherstartup.Text;
+            Properties.Settings.Default.mp_svnserver = tb_mp_svnserver.Text;
 
             Properties.Settings.Default.Save();
         }
