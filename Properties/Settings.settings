@@ -20,10 +20,10 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="mods" Type="System.String" Scope="User" Roaming="false">
-      <Value Profile="(Default)">@23LLK;@BWA3;</Value>
+      <Value Profile="(Default)">@23LLK;@BWA3;@A3MP;</Value>
     </Setting>
     <Setting Name="mp_svnserver" Type="System.String" Scope="User" Roaming="false">
-      <Value Profile="(Default)">svn://stuffyserv.net/svn/A3MP</Value>
+      <Value Profile="(Default)">svn://stuffyserv.net/A3MP</Value>
     </Setting>
     <Setting Name="nosplash" Type="System.Boolean" Scope="User" Roaming="false">
       <Value Profile="(Default)">True</Value>
@@ -38,7 +38,7 @@
       <Value Profile="(Default)">svn://stuffyserv.net/svn/23LLK</Value>
     </Setting>
     <Setting Name="Version" Type="System.String" Scope="User" Roaming="false">
-      <Value Profile="(Default)">0.1.5</Value>
+      <Value Profile="(Default)">0.2.0</Value>
     </Setting>
     <Setting Name="worldempty" Type="System.Boolean" Scope="User" Roaming="false">
       <Value Profile="(Default)">True</Value>

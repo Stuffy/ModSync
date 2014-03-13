@@ -64,7 +64,7 @@ namespace ModSync
             }
             else
             {
-                MessageBox.Show("Der Server '" + Properties.Settings.Default.svnserver + "' konnte nicht erreicht werden.");
+            	MessageBox.Show("Der Server '" + from.ToString() + "' konnte nicht erreicht werden.");
             }
 		}
 

@@ -82,7 +82,7 @@ namespace ModSync.Properties {
 		
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-		[global::System.Configuration.DefaultSettingValueAttribute("@23LLK;@BWA3;")]
+		[global::System.Configuration.DefaultSettingValueAttribute("@23LLK;@BWA3;@A3MP;")]
 		public string mods {
 			get {
 				return ((string)(this["mods"]));
@@ -94,7 +94,7 @@ namespace ModSync.Properties {
 		
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-		[global::System.Configuration.DefaultSettingValueAttribute("")]
+		[global::System.Configuration.DefaultSettingValueAttribute("svn://stuffyserv.net/A3MP")]
 		public string mp_svnserver {
 			get {
 				return ((string)(this["mp_svnserver"]));
@@ -154,7 +154,7 @@ namespace ModSync.Properties {
 		
 		[global::System.Configuration.UserScopedSettingAttribute()]
 		[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-		[global::System.Configuration.DefaultSettingValueAttribute("0.1.5")]
+		[global::System.Configuration.DefaultSettingValueAttribute("0.2.0")]
 		public string Version {
 			get {
 				return ((string)(this["Version"]));

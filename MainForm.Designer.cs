@@ -68,6 +68,8 @@ namespace ModSync
 			this.bt_updatemp = new System.Windows.Forms.Button();
 			this.la_mp_isuptodate = new System.Windows.Forms.Label();
 			this.la_mappack_uptodate = new System.Windows.Forms.Label();
+			this.bt_mp_checkforupdates = new System.Windows.Forms.Button();
+			this.rtb_mp_changelog = new System.Windows.Forms.RichTextBox();
 			this.ms_main.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pb_logo)).BeginInit();
 			this.SuspendLayout();
@@ -136,9 +138,9 @@ namespace ModSync
 			// 
 			// bt_checkforupdates
 			// 
-			this.bt_checkforupdates.Location = new System.Drawing.Point(228, 312);
+			this.bt_checkforupdates.Location = new System.Drawing.Point(12, 122);
 			this.bt_checkforupdates.Name = "bt_checkforupdates";
-			this.bt_checkforupdates.Size = new System.Drawing.Size(110, 40);
+			this.bt_checkforupdates.Size = new System.Drawing.Size(211, 27);
 			this.bt_checkforupdates.TabIndex = 13;
 			this.bt_checkforupdates.Text = "Auf Updates überprüfen";
 			this.bt_checkforupdates.UseVisualStyleBackColor = true;
@@ -147,6 +149,7 @@ namespace ModSync
 			// la_changelog
 			// 
 			this.la_changelog.AutoSize = true;
+			this.la_changelog.BackColor = System.Drawing.Color.Transparent;
 			this.la_changelog.Location = new System.Drawing.Point(229, 28);
 			this.la_changelog.Name = "la_changelog";
 			this.la_changelog.Size = new System.Drawing.Size(58, 13);
@@ -252,7 +255,7 @@ namespace ModSync
 			this.rtb_changelog.Location = new System.Drawing.Point(228, 51);
 			this.rtb_changelog.Name = "rtb_changelog";
 			this.rtb_changelog.ReadOnly = true;
-			this.rtb_changelog.Size = new System.Drawing.Size(302, 187);
+			this.rtb_changelog.Size = new System.Drawing.Size(302, 98);
 			this.rtb_changelog.TabIndex = 17;
 			this.rtb_changelog.Text = "\"Auf Updates überprüfen\" drücken oder automatische Updates aktivieren um Changelo" +
 			"gs zu sehen.";
@@ -260,6 +263,7 @@ namespace ModSync
 			// la_name
 			// 
 			this.la_name.AutoSize = true;
+			this.la_name.BackColor = System.Drawing.Color.Transparent;
 			this.la_name.Location = new System.Drawing.Point(536, 371);
 			this.la_name.Name = "la_name";
 			this.la_name.Size = new System.Drawing.Size(115, 13);
@@ -277,6 +281,7 @@ namespace ModSync
 			// 
 			// pb_logo
 			// 
+			this.pb_logo.BackColor = System.Drawing.Color.Transparent;
 			this.pb_logo.Image = global::ModSync.Properties.Resources.logo_small;
 			this.pb_logo.Location = new System.Drawing.Point(536, 178);
 			this.pb_logo.Name = "pb_logo";
@@ -287,18 +292,20 @@ namespace ModSync
 			// chb_autojoin
 			// 
 			this.chb_autojoin.AutoSize = true;
+			this.chb_autojoin.BackColor = System.Drawing.Color.Transparent;
 			this.chb_autojoin.Location = new System.Drawing.Point(536, 155);
 			this.chb_autojoin.Name = "chb_autojoin";
 			this.chb_autojoin.Size = new System.Drawing.Size(162, 17);
 			this.chb_autojoin.TabIndex = 21;
 			this.chb_autojoin.Text = "Automatisch Server beitreten";
-			this.chb_autojoin.UseVisualStyleBackColor = true;
+			this.chb_autojoin.UseVisualStyleBackColor = false;
 			// 
 			// la_isuptodate_desc
 			// 
 			this.la_isuptodate_desc.AutoSize = true;
+			this.la_isuptodate_desc.BackColor = System.Drawing.Color.Transparent;
 			this.la_isuptodate_desc.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.la_isuptodate_desc.Location = new System.Drawing.Point(228, 245);
+			this.la_isuptodate_desc.Location = new System.Drawing.Point(228, 156);
 			this.la_isuptodate_desc.Name = "la_isuptodate_desc";
 			this.la_isuptodate_desc.Size = new System.Drawing.Size(95, 16);
 			this.la_isuptodate_desc.TabIndex = 22;
@@ -307,8 +314,9 @@ namespace ModSync
 			// la_isuptodate
 			// 
 			this.la_isuptodate.AutoSize = true;
+			this.la_isuptodate.BackColor = System.Drawing.Color.Transparent;
 			this.la_isuptodate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.la_isuptodate.Location = new System.Drawing.Point(333, 245);
+			this.la_isuptodate.Location = new System.Drawing.Point(333, 156);
 			this.la_isuptodate.Name = "la_isuptodate";
 			this.la_isuptodate.Size = new System.Drawing.Size(174, 16);
 			this.la_isuptodate.TabIndex = 23;
@@ -317,7 +325,7 @@ namespace ModSync
 			// bt_updatemp
 			// 
 			this.bt_updatemp.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.bt_updatemp.Location = new System.Drawing.Point(11, 129);
+			this.bt_updatemp.Location = new System.Drawing.Point(12, 198);
 			this.bt_updatemp.Name = "bt_updatemp";
 			this.bt_updatemp.Size = new System.Drawing.Size(211, 65);
 			this.bt_updatemp.TabIndex = 24;
@@ -328,8 +336,9 @@ namespace ModSync
 			// la_mp_isuptodate
 			// 
 			this.la_mp_isuptodate.AutoSize = true;
+			this.la_mp_isuptodate.BackColor = System.Drawing.Color.Transparent;
 			this.la_mp_isuptodate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.la_mp_isuptodate.Location = new System.Drawing.Point(333, 273);
+			this.la_mp_isuptodate.Location = new System.Drawing.Point(333, 299);
 			this.la_mp_isuptodate.Name = "la_mp_isuptodate";
 			this.la_mp_isuptodate.Size = new System.Drawing.Size(174, 16);
 			this.la_mp_isuptodate.TabIndex = 26;
@@ -338,18 +347,43 @@ namespace ModSync
 			// la_mappack_uptodate
 			// 
 			this.la_mappack_uptodate.AutoSize = true;
+			this.la_mappack_uptodate.BackColor = System.Drawing.Color.Transparent;
 			this.la_mappack_uptodate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.la_mappack_uptodate.Location = new System.Drawing.Point(228, 273);
+			this.la_mappack_uptodate.Location = new System.Drawing.Point(228, 299);
 			this.la_mappack_uptodate.Name = "la_mappack_uptodate";
 			this.la_mappack_uptodate.Size = new System.Drawing.Size(84, 16);
 			this.la_mappack_uptodate.TabIndex = 25;
 			this.la_mappack_uptodate.Text = "Mappack ist:";
 			// 
+			// bt_mp_checkforupdates
+			// 
+			this.bt_mp_checkforupdates.Location = new System.Drawing.Point(12, 267);
+			this.bt_mp_checkforupdates.Name = "bt_mp_checkforupdates";
+			this.bt_mp_checkforupdates.Size = new System.Drawing.Size(210, 27);
+			this.bt_mp_checkforupdates.TabIndex = 27;
+			this.bt_mp_checkforupdates.Text = "Auf Updates überprüfen";
+			this.bt_mp_checkforupdates.UseVisualStyleBackColor = true;
+			this.bt_mp_checkforupdates.Click += new System.EventHandler(this.Bt_mp_checkforupdatesClick);
+			// 
+			// rtb_mp_changelog
+			// 
+			this.rtb_mp_changelog.Font = new System.Drawing.Font("Ebrima", 8.25F);
+			this.rtb_mp_changelog.Location = new System.Drawing.Point(228, 198);
+			this.rtb_mp_changelog.Name = "rtb_mp_changelog";
+			this.rtb_mp_changelog.ReadOnly = true;
+			this.rtb_mp_changelog.Size = new System.Drawing.Size(302, 98);
+			this.rtb_mp_changelog.TabIndex = 28;
+			this.rtb_mp_changelog.Text = "\"Auf Updates überprüfen\" drücken oder automatische Updates aktivieren um Changelo" +
+			"gs zu sehen.";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.BackColor = System.Drawing.SystemColors.ControlLightLight;
 			this.ClientSize = new System.Drawing.Size(761, 482);
+			this.Controls.Add(this.rtb_mp_changelog);
+			this.Controls.Add(this.bt_mp_checkforupdates);
 			this.Controls.Add(this.la_mp_isuptodate);
 			this.Controls.Add(this.la_mappack_uptodate);
 			this.Controls.Add(this.bt_updatemp);
@@ -369,6 +403,7 @@ namespace ModSync
 			this.Controls.Add(this.bt_settings);
 			this.Controls.Add(this.bt_checkout);
 			this.Controls.Add(this.ms_main);
+			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.ms_main;
@@ -383,6 +418,8 @@ namespace ModSync
 			this.ResumeLayout(false);
 			this.PerformLayout();
         }
+		private System.Windows.Forms.RichTextBox rtb_mp_changelog;
+		private System.Windows.Forms.Button bt_mp_checkforupdates;
 		private System.Windows.Forms.Label la_mappack_uptodate;
 		private System.Windows.Forms.Label la_mp_isuptodate;
 		private System.Windows.Forms.Button bt_updatemp;

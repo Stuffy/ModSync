@@ -41,6 +41,8 @@ namespace ModSync
 		void Bt_checkoutClick(object sender, EventArgs e)
 		{
             bool upt = true;
+            
+            if (bt_updatemp.Text != "Abbrechen")
             if (checkforexe() == false)
             {
                 if (MessageBox.Show("Die arma3.exe wurde im ausgewählten Update-Verzeichniss nicht gefunden. Sicher, das das Update durchgeführt werden soll?", "Arma3.exe nicht gefunden!", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -62,7 +64,7 @@ namespace ModSync
                     la_desc_dl1.Text = "Inhalte werden herruntergeladen...";
                     la_byte.Visible = true;
                     la_desc_dl1.Visible = true;
-                    prgupdate = new Thread(new ThreadStart(() => updateProgress()));
+                    prgupdate = new Thread(new ThreadStart(() => updateProgress(0)));
                     prgupdate.Start();
                     while (!prgupdate.IsAlive) ;
                 }
@@ -72,7 +74,7 @@ namespace ModSync
                     {
                         svnM.endThread();
                         prgupdate.Abort();
-                        ThreadDone(true);
+                        ThreadDone(true, 0);
                     }
                 }
             }
@@ -101,7 +103,7 @@ namespace ModSync
 		    _shouldStop = true;
 		}
 		
-		void updateProgress() {
+		void updateProgress(int what) {
             SvnProgressEventArgs progress = null;
 			while (!_shouldStop) {
 				if (svnM.getProgress() != null) {
@@ -111,7 +113,7 @@ namespace ModSync
 				if (svnM.done) {
 					this.RequestStop();
                     svnM.done = false;
-                    Invoke((MethodInvoker)delegate { ThreadDone(false); });
+                    Invoke((MethodInvoker) delegate { ThreadDone(false, what); });
 				}
 			}
             _shouldStop = false;
@@ -130,21 +132,37 @@ namespace ModSync
             }
 		}
 
-        void ThreadDone(bool aborted)
+        void ThreadDone(bool aborted, int what)
         {
-            //pb_dl.Maximum = 0;
-            bt_checkout.Text = "Update";
-            la_byte.Visible = false;
-            if (aborted == false)
-            {
-                la_desc_dl1.Text = "Herrunterladen war erfolgreich!";
-                updateresult = 0;
-                setUpdateLabel(null, la_isuptodate);
-            }
-            else
-            {
-                la_desc_dl1.Text = "Operation abgebrochen";
-            }
+        	if (what == 0) {
+	            //pb_dl.Maximum = 0;
+	            bt_checkout.Text = "Update Mod-Pack";
+	            la_byte.Visible = false;
+	            if (aborted == false)
+	            {
+	                la_desc_dl1.Text = "Herrunterladen war erfolgreich!";
+	                updateresult = 0;
+	                setUpdateLabel(null, la_isuptodate, updateresult);
+	            }
+	            else
+	            {
+	                la_desc_dl1.Text = "Operation abgebrochen";
+	            }
+        	} else if (what == 1) {
+        		 //pb_dl.Maximum = 0;
+	            bt_updatemp.Text = "Update Map-Pack";
+	            la_byte.Visible = false;
+	            if (aborted == false)
+	            {
+	                la_desc_dl1.Text = "Herrunterladen war erfolgreich!";
+	                mp_updateresult = 0;
+	                setUpdateLabel(null, la_mp_isuptodate, mp_updateresult);
+	            }
+	            else
+	            {
+	                la_desc_dl1.Text = "Operation abgebrochen";
+	            }
+        	}
 
         }
 
@@ -153,29 +171,29 @@ namespace ModSync
             chb_autojoin.Checked = Properties.Settings.Default.autojoin;
         }
 
-        int checkforUpdate(out SvnInfoEventArgs[] repos, string repo_to_check) 
+        int checkforUpdate(out SvnInfoEventArgs[] repos, string local_repo_to_check, string repo_to_check, RichTextBox rtb) 
         {
-            repos = svnM.svnGetDiff(Properties.Settings.Default.arma3path, repo_to_check);
+            repos = svnM.svnGetDiff(local_repo_to_check, repo_to_check);
 
             Collection<SvnLogEventArgs> logs = null;
 
             Uri svns;
 
             try {
-                svns = new Uri(Properties.Settings.Default.svnserver);
+                svns = new Uri(repo_to_check);
             }
             catch (Exception) {
                 return 3;
             }
 
             logs = svnM.GetLatestCommitMessages(svns, 55);
-            rtb_changelog.Text = "";
+            rtb.Text = "";
             if ( logs != null)
             foreach (SvnLogEventArgs rev in logs)
             {
                 if (rev != null)
                 {
-                    rtb_changelog.Text += rev.Time + "\r\nRevision " + rev.Revision + ":\r\n\r\n" + rev.LogMessage + "\r\n\r\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \r\n\r\n";
+                    rtb.Text += rev.Time + "\r\nRevision " + rev.Revision + ":\r\n\r\n" + rev.LogMessage + "\r\n\r\n - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \r\n\r\n";
                 }
             }
 
@@ -229,22 +247,31 @@ namespace ModSync
         }
 
         int updateresult;
+        int mp_updateresult;
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
             if (Properties.Settings.Default.checkforupdates == true)
             {
                 SvnInfoEventArgs[] repos;
-                updateresult = checkforUpdate(out repos, Properties.Settings.Default.svnserver);
-                setUpdateLabel(repos, la_isuptodate);
+                updateresult = checkforUpdate(out repos, Properties.Settings.Default.arma3path, Properties.Settings.Default.svnserver, rtb_changelog);
+                setUpdateLabel(repos, la_isuptodate, updateresult);
                 if (updateresult == 1)
                 {
-                    MessageBox.Show("Ein Update ist verfügbar! Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString());
+                    MessageBox.Show("Ein Update für das Mod-Pack ist verfügbar! Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString());
+                }
+                
+            	mp_updateresult = checkforUpdate(out repos, Properties.Settings.Default.arma3path + "\\@A3MP\\", Properties.Settings.Default.mp_svnserver, rtb_mp_changelog);
+            	setUpdateLabel(repos, la_mp_isuptodate, mp_updateresult);
+            	
+                if (mp_updateresult == 1)
+                {
+                    MessageBox.Show("Ein Update für das Map-Pack ist verfügbar! Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString());
                 }
             }
         }
 
-        private void setUpdateLabel(SvnInfoEventArgs[] repos, Label label_to_set)
+        private void setUpdateLabel(SvnInfoEventArgs[] repos, Label label_to_set, int updateresult)
         {
             if (updateresult == 1)
             {
@@ -266,8 +293,8 @@ namespace ModSync
         private void bt_checkforupdates_Click(object sender, EventArgs e)
         {
             SvnInfoEventArgs[] repos;
-            updateresult = checkforUpdate(out repos, Properties.Settings.Default.svnserver);
-            setUpdateLabel(repos, la_isuptodate);
+            updateresult = checkforUpdate(out repos, Properties.Settings.Default.arma3path, Properties.Settings.Default.svnserver, rtb_changelog);
+            setUpdateLabel(repos, la_isuptodate, updateresult);
             if (updateresult == 1)
             {
                 MessageBox.Show("Ein Update ist verfügbar! Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString(), "Neue Updates gefunden");
@@ -299,7 +326,7 @@ namespace ModSync
             {
                 args += " -world=empty";
             }
-            if (Properties.Settings.Default.autojoin || chb_autojoin.Checked)
+            if (chb_autojoin.Checked)
             {
                 string[] ip_port = new string[2];
 
@@ -379,6 +406,8 @@ namespace ModSync
 		void Bt_updatempClick(object sender, EventArgs e)
 		{
 			bool upt = true;
+			
+			if (bt_updatemp.Text != "Abbrechen")
             if (checkforexe() == false)
             {
                 if (MessageBox.Show("Die arma3.exe wurde im ausgewählten Update-Verzeichniss nicht gefunden. Sicher, das das Update durchgeführt werden soll?", "Arma3.exe nicht gefunden!", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -393,14 +422,18 @@ namespace ModSync
             if (upt)
             if (svnM._IsReachable)
             {
-                if (bt_checkout.Text != "Abbrechen")
+                if (bt_updatemp.Text != "Abbrechen")
                 {
-                    svnM.startUpdate(new Uri(Properties.Settings.Default.svnserver), Properties.Settings.Default.arma3path);
-                    bt_checkout.Text = "Abbrechen";
+                	string path = Properties.Settings.Default.arma3path + "\\@A3MP\\";
+                	if (!Directory.Exists(path)) {
+                		System.IO.Directory.CreateDirectory(path);
+                	}
+                    svnM.startUpdate(new Uri(Properties.Settings.Default.mp_svnserver), path);
+                    bt_updatemp.Text = "Abbrechen";
                     la_desc_dl1.Text = "Inhalte werden herruntergeladen...";
                     la_byte.Visible = true;
                     la_desc_dl1.Visible = true;
-                    prgupdate = new Thread(new ThreadStart(() => updateProgress()));
+                    prgupdate = new Thread(new ThreadStart(() => updateProgress(1)));
                     prgupdate.Start();
                     while (!prgupdate.IsAlive) ;
                 }
@@ -410,13 +443,32 @@ namespace ModSync
                     {
                         svnM.endThread();
                         prgupdate.Abort();
-                        ThreadDone(true);
+                        ThreadDone(true, 1);
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Der Server '" + Properties.Settings.Default.svnserver + "' konnte nicht erreicht werden.");
+                MessageBox.Show("Der Server '" + Properties.Settings.Default.mp_svnserver + "' konnte nicht erreicht werden.");
+            }
+		}
+		
+		void Bt_mp_checkforupdatesClick(object sender, EventArgs e)
+		{
+			SvnInfoEventArgs[] repos;
+            mp_updateresult = checkforUpdate(out repos, Properties.Settings.Default.arma3path + "\\@A3MP\\", Properties.Settings.Default.mp_svnserver, rtb_mp_changelog);
+            setUpdateLabel(repos, la_mp_isuptodate, mp_updateresult);
+            if (mp_updateresult == 1)
+            {
+                MessageBox.Show("Ein Update für das Map-Pack ist verfügbar! Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString(), "Neue Updates gefunden");
+            }
+            else if (mp_updateresult == 0)
+            {
+                MessageBox.Show("Keine neuen Updates gefunden. Lokale Version: " + repos[0].Revision.ToString() + " Remote Version: " + repos[1].Revision.ToString(), "Keine neuen Updates");
+            }
+            else if (mp_updateresult == 4)
+            {
+                MessageBox.Show("Keine Version des Map-Packets gefunden! Bitte auf \"Update Map-Pack\" drücken!", "Keine Version des Updates gefunden!");
             }
 		}
 	}
