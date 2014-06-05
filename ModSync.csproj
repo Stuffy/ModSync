@@ -104,13 +104,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="rsync.cs" />
     <Compile Include="settings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="settings.Designer.cs">
       <DependentUpon>settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="svnMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="about.resx">
